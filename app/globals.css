@@ -5,6 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --font-sans: var(--font-plus-jakarta-sans);
   --background: oklch(0.994 0 0);
   --foreground: oklch(0.2178 0 0);
   --card: oklch(1 0 0);
@@ -37,9 +38,9 @@
   --sidebar-accent-foreground: oklch(0.2178 0 0);
   --sidebar-border: oklch(0.9067 0 0);
   --sidebar-ring: oklch(0.433 0.0745 149.7347);
-  --font-sans: "Plus Jakarta Sans", sans-serif;
-  --font-serif: "Plus Jakarta Sans", sans-serif;
-  --font-mono: "Plus Jakarta Sans", sans-serif;
+  --font-sans: var(--font-plus-jakarta-sans);
+  --font-serif: var(--font-plus-jakarta-sans);
+  --font-mono: var(--font-plus-jakarta-sans);
   --radius: 0.5rem;
   --shadow-x: 0;
   --shadow-y: 0.125rem;
@@ -97,9 +98,9 @@
   --sidebar-accent-foreground: oklch(0.994 0 0);
   --sidebar-border: oklch(0.3485 0 0);
   --sidebar-ring: oklch(0.433 0.0745 149.7347);
-  --font-sans: "Plus Jakarta Sans", sans-serif;
-  --font-serif: "Plus Jakarta Sans", sans-serif;
-  --font-mono: "Plus Jakarta Sans", sans-serif;
+  --font-sans: var(--font-plus-jakarta-sans);
+  --font-serif: var(--font-plus-jakarta-sans);
+  --font-mono: var(--font-plus-jakarta-sans);
   --radius: 0.5rem;
   --shadow-x: 0;
   --shadow-y: 0.25rem;
@@ -188,5 +189,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
   }
 }
