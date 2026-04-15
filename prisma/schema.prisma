@@ -21,6 +21,7 @@ model Barbershop {
   phone       String
   imageUrl    String
   services    BarbershopService[]
+
 }
 
 model BarbershopService {
