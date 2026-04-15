@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 
 const BookingItem = () => {
   return (
-    <Card className="bg-card-background flex h-full w-full cursor-pointer flex-row items-center justify-between p-0">
+    <Card className="bg-card-background border-border flex h-full w-full cursor-pointer flex-row items-center justify-between border p-0">
       {/* ESQUERDA */}
       <div className="flex flex-1 flex-col gap-4 p-4">
         <Badge>Confirmado</Badge>

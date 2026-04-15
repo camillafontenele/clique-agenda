@@ -97,7 +97,7 @@ const BarbershopPage = async ({ params }: PageProps<"/barbershops/[id]">) => {
           </PageSectionContent>
         </div>
 
-        <div className="pt-[3.75rem]" />
+        <div className="pt-[3rem]" />
       </div>
     </div>
   );
