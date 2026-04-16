@@ -39,7 +39,6 @@ Tecnologias utilizadas:
 - DRY — evite duplicação; crie funções/componentes reutilizáveis quando necessário.
 - NUNCA escreva comentários no código.
 - NUNCA rode `npm run dev` para verificar mudanças.
-
 - Nunca use `any` — prefira `unknown` com narrowing.
 - Use imports absolutos com `@/` (ex.: `@/components/ui/button`).
 

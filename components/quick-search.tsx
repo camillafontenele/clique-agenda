@@ -16,7 +16,10 @@ const QuickSearch = () => {
   return (
     <>
       <div className="flex items-center gap-2">
-        <Input className="border-border rounded-full" placeholder="Pesquisar" />
+        <Input
+          className="border-border rounded-full"
+          placeholder="Pesquise serviços ou barbearias"
+        />
         <Button className="h-10 w-10 rounded-full">
           <SearchIcon />
         </Button>
