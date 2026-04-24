@@ -11,7 +11,7 @@ interface ServiceItemProps {
 const ServiceItem = ({ service }: ServiceItemProps) => {
   return (
     <div className="bg-card-background border-border flex items-center gap-3 rounded-2xl border p-3">
-      <div className="border-border relative size-[6.875rem] shrink-0 overflow-hidden rounded-[0.625rem]">
+      <div className="border-border relative size-27.5 shrink-0 overflow-hidden rounded-[0.625rem]">
         <Image
           src={service.imageUrl}
           alt={service.name}

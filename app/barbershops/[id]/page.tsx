@@ -21,7 +21,7 @@ const BarbershopPage = async ({ params }: PageProps<"/barbershops/[id]">) => {
   return (
     <div>
       {/* Banner */}
-      <div className="relative h-[18.75rem] w-full">
+      <div className="relative h-75 w-full">
         <Image
           src={barbershop.imageUrl}
           alt={barbershop.name}
@@ -32,11 +32,11 @@ const BarbershopPage = async ({ params }: PageProps<"/barbershops/[id]">) => {
       </div>
 
       {/* Container */}
-      <div className="bg-background relative z-10 mt-[-1.5rem] rounded-t-3xl">
+      <div className="bg-background relative z-10 -mt-6 rounded-t-3xl">
         {/* Info da barbearia */}
         <div className="px-5 pt-6">
           <div className="flex items-center gap-1.5">
-            <div className="relative size-[1.875rem] shrink-0 overflow-hidden rounded-full">
+            <div className="relative size-7.5 shrink-0 overflow-hidden rounded-full">
               <Image
                 src={barbershop.imageUrl}
                 alt={barbershop.name}
@@ -97,7 +97,7 @@ const BarbershopPage = async ({ params }: PageProps<"/barbershops/[id]">) => {
           </PageSectionContent>
         </div>
 
-        <div className="pt-[3rem]" />
+        <div className="pt-12" />
       </div>
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { CalendarDays, House, LogIn, LogOut, MenuIcon } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -13,8 +14,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
-const isLoggedIn = false;
+import { authClient } from "@/lib/auth-client";
 
 const CATEGORIES = [
   { label: "Cabelo", search: "cabelo" },
@@ -26,6 +26,24 @@ const CATEGORIES = [
 ];
 
 const SidebarMenu = () => {
+  const { data: session } = authClient.useSession();
+  const handleLogin = async () => {
+    const { error } = await authClient.signIn.social({
+      provider: "google",
+    });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+  };
+  const handleLogout = async () => {
+    const { error } = await authClient.signOut();
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+  };
+  const isLoggedIn = !!session?.user;
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -43,15 +61,21 @@ const SidebarMenu = () => {
             {isLoggedIn ? (
               <div className="flex items-center gap-3">
                 <Avatar>
-                  <AvatarImage src="" alt="Camilla Fontenele" />
-                  <AvatarFallback>CF</AvatarFallback>
+                  <AvatarImage
+                    src={session?.user.image ?? ""}
+                    alt={session?.user.name}
+                    referrerPolicy="no-referrer"
+                  />
+                  <AvatarFallback>
+                    {session?.user.name.charAt(0).toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                   <span className="text-foreground text-sm font-semibold">
-                    Camilla Fontenele
+                    {session?.user.name}
                   </span>
                   <span className="text-muted-foreground text-xs">
-                    camilla@email.com
+                    {session?.user.email}
                   </span>
                 </div>
               </div>
@@ -63,6 +87,7 @@ const SidebarMenu = () => {
                 <Button
                   size="sm"
                   className="font-noemal gap-3 rounded-full px-6 font-normal"
+                  onClick={handleLogin}
                 >
                   Login
                   <LogIn className="size-4" strokeWidth={1.5} />
@@ -106,13 +131,16 @@ const SidebarMenu = () => {
 
           <Separator />
 
-          <Button
-            variant="ghost"
-            className="text-muted-foreground w-full justify-start gap-3 rounded-full px-5 py-3 text-sm font-medium"
-          >
-            <LogOut className="size-4" />
-            Sair da conta
-          </Button>
+          {isLoggedIn && (
+            <Button
+              variant="outline"
+              className="font-noemal gap-3 rounded-full px-6 font-normal"
+              onClick={handleLogout}
+            >
+              <LogOut className="size-4" />
+              Sair da conta
+            </Button>
+          )}
         </div>
       </SheetContent>
     </Sheet>
