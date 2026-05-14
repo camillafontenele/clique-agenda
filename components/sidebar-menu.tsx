@@ -28,12 +28,15 @@ const CATEGORIES = [
 const SidebarMenu = () => {
   const { data: session } = authClient.useSession();
   const handleLogin = async () => {
-    const { error } = await authClient.signIn.social({
-      provider: "google",
-    });
-    if (error) {
-      toast.error(error.message);
-      return;
+    try {
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+      });
+      if (error) {
+        toast.error(error.message);
+      }
+    } catch {
+      toast.error("Erro ao fazer login. Tente novamente.");
     }
   };
   const handleLogout = async () => {

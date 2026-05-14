@@ -21,6 +21,8 @@ model Barbershop {
   phone       String
   imageUrl    String
   services    BarbershopService[]
+
+  bookings Booking[]
 }
 
 model BarbershopService {
@@ -31,6 +33,23 @@ model BarbershopService {
   priceInCents Int
   barbershopId String
   barbershop   Barbershop @relation(fields: [barbershopId], references: [id], onDelete: Cascade)
+
+  bookings Booking[]
+}
+
+model Booking {
+  id             String            @id @default(uuid())
+  stripeChargeId String?
+  barbershopId   String
+  barbershop     Barbershop        @relation(fields: [barbershopId], references: [id], onDelete: Cascade)
+  serviceId      String
+  service        BarbershopService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date           DateTime          @db.Timestamptz()
+  cancelledAt    DateTime?         @db.Timestamptz()
+  createdAt      DateTime          @default(now()) @db.Timestamptz()
+  updatedAt      DateTime          @updatedAt @db.Timestamptz()
 }
 
 model User {
@@ -43,6 +62,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  bookings      Booking[]
 
   @@unique([email])
   @@map("user")
