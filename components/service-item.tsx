@@ -1,14 +1,17 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { format, startOfDay } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useAction } from "next-safe-action/hooks";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { createBooking } from "@/action/create-booking";
+import { getDateAvailableTimeSlots } from "@/action/get-date-available-time-slots";
+import querykeys from "@/constants/query-keys";
 import { Barbershop, BarbershopService } from "@/generated/prisma/client";
 import { formatCurrency } from "@/lib/utils";
 
@@ -26,28 +29,8 @@ import {
 
 interface ServiceItemProps {
   service: BarbershopService;
-  barbershop: Pick<Barbershop, "name">;
+  barbershop: Pick<Barbershop, "id" | "name">;
 }
-
-const TIME_LIST = [
-  "09:00",
-  "09:30",
-  "10:00",
-  "10:30",
-  "11:00",
-  "11:30",
-  "12:00",
-  "12:30",
-  "13:00",
-  "13:30",
-  "14:00",
-  "14:30",
-  "15:00",
-  "15:30",
-  "16:00",
-  "16:30",
-  "17:00",
-];
 
 const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -58,6 +41,20 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   const { executeAsync: executeCreateBooking, isPending: isCreatingBooking } =
     useAction(createBooking);
 
+  const { data: availableTimeSlots, isPending: isLoadingAvailableTimeSlots } =
+    useQuery({
+      queryKey: querykeys.getDateAvailableTimeSlots(
+        service.barbershopId,
+        selectedDate!,
+      ),
+      queryFn: () =>
+        getDateAvailableTimeSlots({
+          barbershopId: barbershop.id,
+          date: selectedDate!,
+        }),
+      enabled: Boolean(selectedDate),
+    });
+
   const handleDateSelect = (date: Date | undefined) => {
     setSelectedDate(date);
     setSelectedTime(undefined);
@@ -66,13 +63,6 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
   };
-
-  const timeList = useMemo(() => {
-    if (!selectedDate) {
-      return [];
-    }
-    return TIME_LIST;
-  }, [selectedDate]);
 
   const handleConfirmBooking = async () => {
     if (!selectedDate || !selectedTime) {
@@ -168,16 +158,20 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
 
               {selectedDate && (
                 <div className="border-border flex gap-2 overflow-x-auto border-b px-5 py-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                  {timeList.map((time) => (
-                    <Button
-                      key={time}
-                      variant={selectedTime === time ? "default" : "outline"}
-                      className="h-8 shrink-0 rounded-full px-4 text-sm font-normal"
-                      onClick={() => handleTimeSelect(time)}
-                    >
-                      {time}
-                    </Button>
-                  ))}
+                  {isLoadingAvailableTimeSlots ? (
+                    <Loader2 className="text-muted-foreground size-4 animate-spin" />
+                  ) : (
+                    availableTimeSlots?.data?.map((time) => (
+                      <Button
+                        key={time}
+                        variant={selectedTime === time ? "default" : "outline"}
+                        className="h-8 shrink-0 rounded-full px-4 text-sm font-normal"
+                        onClick={() => handleTimeSelect(time)}
+                      >
+                        {time}
+                      </Button>
+                    ))
+                  )}
                 </div>
               )}
 

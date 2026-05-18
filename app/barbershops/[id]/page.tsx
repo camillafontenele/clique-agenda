@@ -77,7 +77,7 @@ const BarbershopPage = async ({ params }: PageProps<"/barbershops/[id]">) => {
               <ServiceItem
                 key={service.id}
                 service={service}
-                barbershop={{ name: barbershop.name }}
+                barbershop={{ id: barbershop.id, name: barbershop.name }}
               />
             ))}
           </PageSectionContent>
