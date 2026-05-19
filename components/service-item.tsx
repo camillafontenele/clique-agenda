@@ -1,6 +1,6 @@
 "use client";
 
-import { format, startOfDay } from "date-fns";
+import { startOfDay } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
@@ -9,13 +9,13 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { createBooking } from "@/action/create-booking";
+import BookingSummary from "@/components/booking-summary";
 import { Barbershop, BarbershopService } from "@/generated/prisma/client";
 import { useGetDateAvailableTimeSlots } from "@/hooks/data/use-get-date-avaliabe-time-slots";
 import { formatCurrency } from "@/lib/utils";
 
 import { Button } from "./ui/button";
 import { Calendar } from "./ui/calendar";
-import { Card, CardContent } from "./ui/card";
 import {
   Sheet,
   SheetContent,
@@ -167,41 +167,13 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
 
               {selectedDate && selectedTime && (
                 <div className="px-5 py-4">
-                  <Card className="gap-0 rounded-xl py-0 shadow-none">
-                    <CardContent className="flex flex-col gap-2.5 p-3">
-                      <div className="flex items-center justify-between">
-                        <h2 className="text-sm font-bold">{service.name}</h2>
-                        <p className="text-sm font-bold">
-                          {formatCurrency(service.priceInCents)}
-                        </p>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <p className="text-muted-foreground text-sm">Data</p>
-                        <p className="text-muted-foreground text-sm">
-                          {format(selectedDate, "d 'de' MMMM", {
-                            locale: ptBR,
-                          })}
-                        </p>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <p className="text-muted-foreground text-sm">Horário</p>
-                        <p className="text-muted-foreground text-sm">
-                          {selectedTime}
-                        </p>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <p className="text-muted-foreground text-sm">
-                          Barbearia
-                        </p>
-                        <p className="text-muted-foreground text-sm">
-                          {barbershop.name}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <BookingSummary
+                    serviceName={service.name}
+                    priceInCents={service.priceInCents}
+                    date={selectedDate}
+                    time={selectedTime}
+                    barbershopName={barbershop.name}
+                  />
                 </div>
               )}
 
