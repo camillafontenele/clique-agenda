@@ -8,12 +8,9 @@ import {
   setMinutes,
   startOfDay,
 } from "date-fns";
-import { headers } from "next/headers";
-import { returnValidationErrors } from "next-safe-action";
 import { z } from "zod";
 
 import { actionClient } from "@/lib/action-client";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 const InputSchema = z.object({
@@ -44,16 +41,6 @@ const TIME_LIST = [
 export const getDateAvailableTimeSlots = actionClient
   .inputSchema(InputSchema)
   .action(async ({ parsedInput: { date, barbershopId } }) => {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-    if (!session?.user) {
-      returnValidationErrors(InputSchema, {
-        _errors: [
-          "Não autorizado. Por favor faça login para acessar os horários disponíveis.",
-        ],
-      });
-    }
     const bookings = await prisma.booking.findMany({
       where: {
         barbershopId,
