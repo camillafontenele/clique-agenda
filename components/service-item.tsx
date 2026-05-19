@@ -1,6 +1,5 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { format, startOfDay } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Loader2 } from "lucide-react";
@@ -10,9 +9,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { createBooking } from "@/action/create-booking";
-import { getDateAvailableTimeSlots } from "@/action/get-date-available-time-slots";
-import querykeys from "@/constants/query-keys";
 import { Barbershop, BarbershopService } from "@/generated/prisma/client";
+import { useGetDateAvailableTimeSlots } from "@/hooks/data/use-get-date-avaliabe-time-slots";
 import { formatCurrency } from "@/lib/utils";
 
 import { Button } from "./ui/button";
@@ -42,17 +40,9 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
     useAction(createBooking);
 
   const { data: availableTimeSlots, isPending: isLoadingAvailableTimeSlots } =
-    useQuery({
-      queryKey: querykeys.getDateAvailableTimeSlots(
-        service.barbershopId,
-        selectedDate!,
-      ),
-      queryFn: () =>
-        getDateAvailableTimeSlots({
-          barbershopId: barbershop.id,
-          date: selectedDate!,
-        }),
-      enabled: Boolean(selectedDate),
+    useGetDateAvailableTimeSlots({
+      barbershopId: barbershop.id,
+      date: selectedDate,
     });
 
   const handleDateSelect = (date: Date | undefined) => {
