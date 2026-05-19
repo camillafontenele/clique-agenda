@@ -1,6 +1,13 @@
 "use server";
 
-import { endOfDay, format, startOfDay } from "date-fns";
+import {
+  endOfDay,
+  format,
+  isPast,
+  setHours,
+  setMinutes,
+  startOfDay,
+} from "date-fns";
 import { headers } from "next/headers";
 import { returnValidationErrors } from "next-safe-action";
 import { z } from "zod";
@@ -64,9 +71,12 @@ export const getDateAvailableTimeSlots = actionClient
       bookings.map((booking) => format(booking.date, "HH:mm")),
     );
 
-    const availableTimeSlots = TIME_LIST.filter(
-      (slot) => !occupiedSlots.has(slot),
-    );
+    const availableTimeSlots = TIME_LIST.filter((slot) => {
+      const [hours, minutes] = slot.split(":").map(Number);
+      const slotDate = setMinutes(setHours(date, hours), minutes);
+
+      return !occupiedSlots.has(slot) && !isPast(slotDate);
+    });
 
     return availableTimeSlots;
   });

@@ -1,5 +1,6 @@
 "use server";
 
+import { isPast } from "date-fns/isPast";
 import { headers } from "next/headers";
 import { returnValidationErrors } from "next-safe-action";
 import { z } from "zod";
@@ -16,6 +17,9 @@ const inputSchema = z.object({
 export const createBooking = actionClient
   .inputSchema(inputSchema)
   .action(async ({ parsedInput: { serviceId, date } }) => {
+    if (isPast(date)) {
+      returnValidationErrors(inputSchema, { _errors: ["Data inválida"] });
+    }
     const session = await auth.api.getSession({
       headers: await headers(),
     });
