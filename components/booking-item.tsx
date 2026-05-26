@@ -34,10 +34,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import type { BookingWithRelations } from "@/data/bookings";
-import {
-  type BookingStatus,
-  getBookingStatus,
-} from "@/lib/get-booking-status";
+import { type BookingStatus, getBookingStatus } from "@/lib/get-booking-status";
 import { cn } from "@/lib/utils";
 
 interface BookingItemProps {
@@ -119,7 +116,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
             </div>
           </div>
 
-          <div className="border-border text-card-foreground flex h-full w-[6.625rem] shrink-0 flex-col items-center justify-center border-l py-3">
+          <div className="border-border text-card-foreground flex h-full w-26.5 shrink-0 flex-col items-center justify-center border-l py-3">
             <p className="text-xs">{month}</p>
             <p className="text-2xl leading-tight">
               {format(booking.date, "dd")}
@@ -129,7 +126,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
         </Card>
       </SheetTrigger>
 
-      <SheetContent className="w-full gap-0 overflow-y-auto px-0 pb-0 sm:w-[23.125rem] sm:max-w-[23.125rem]">
+      <SheetContent className="w-[calc(100%-2.5rem)] gap-0 overflow-y-auto px-0 pb-0 sm:w-92.5 sm:max-w-92.5">
         <SheetHeader className="border-border shrink-0 border-b px-5 py-6">
           <SheetTitle className="text-lg font-bold">
             Informações da Reserva
@@ -137,7 +134,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
         </SheetHeader>
 
         <div className="flex flex-1 flex-col gap-6 px-5 py-6">
-          <div className="relative flex h-[11.25rem] items-end overflow-hidden rounded-lg p-5">
+          <div className="relative flex h-45 items-end overflow-hidden rounded-lg p-5">
             <Image
               src="/booking-map.png"
               alt={`Mapa de ${booking.barbershop.name}`}
