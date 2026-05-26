@@ -114,23 +114,23 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                 </SheetTitle>
               </SheetHeader>
 
-              <div className="border-border border-b px-5 py-5">
+              <div className="border-border flex justify-center border-b px-5 py-5">
                 <Calendar
                   mode="single"
                   selected={selectedDate}
                   onSelect={handleDateSelect}
                   locale={ptBR}
                   disabled={(date) => date < startOfDay(new Date())}
-                  className="w-full p-0 [--cell-size:clamp(2rem,8.5vw,2.6rem)]"
+                  className="mx-auto p-0 [--cell-size:clamp(2.25rem,9vw,2.85rem)]"
                   classNames={{
-                    root: "w-full",
-                    months: "relative w-full",
-                    month: "w-full gap-4",
-                    weekdays: "grid w-full grid-cols-7",
+                    root: "w-fit",
+                    months: "relative ",
+                    month: "gap-4",
+                    weekdays: "grid grid-cols-7",
                     weekday:
-                      "text-muted-foreground text-center text-xs font-normal capitalize",
-                    week: "grid w-full grid-cols-7 gap-1",
-                    day: "flex h-[var(--cell-size)] w-full items-center justify-center p-0",
+                      "text-muted-foreground flex h-[var(--cell-size)] w-[var(--cell-size)] items-center justify-center text-center text-xs font-normal capitalize",
+                    week: "grid grid-cols-7 gap-1",
+                    day: "flex h-[var(--cell-size)] w-[var(--cell-size)] items-center justify-center p-0",
                     day_button:
                       "mx-auto size-[var(--cell-size)] rounded-full text-sm font-normal hover:bg-muted data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground",
                     caption: "capitalize",
