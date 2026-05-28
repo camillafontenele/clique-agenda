@@ -8,12 +8,32 @@ export type BookingWithRelations = BookingGetPayload<{
   };
 }>;
 
+const bookingRelations = {
+  barbershop: true,
+  service: true,
+} as const;
+
+export const getUserScheduledBookings = async (userId: string) => {
+  const now = new Date();
+  const scheduledBookings = await prisma.booking.findMany({
+    where: {
+      userId,
+      cancelledAt: null,
+      date: {
+        gte: now,
+      },
+    },
+    include: bookingRelations,
+    orderBy: {
+      date: "asc",
+    },
+  });
+
+  return scheduledBookings;
+};
+
 export const getUserBookings = async (userId: string) => {
   const now = new Date();
-  const include = {
-    barbershop: true,
-    service: true,
-  } as const;
 
   const [scheduledBookings, finishedBookings] = await Promise.all([
     prisma.booking.findMany({
@@ -24,7 +44,7 @@ export const getUserBookings = async (userId: string) => {
           gte: now,
         },
       },
-      include,
+      include: bookingRelations,
       orderBy: {
         date: "asc",
       },
@@ -45,7 +65,7 @@ export const getUserBookings = async (userId: string) => {
           },
         ],
       },
-      include,
+      include: bookingRelations,
       orderBy: {
         date: "desc",
       },
