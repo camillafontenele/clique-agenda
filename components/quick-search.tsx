@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Eye,
   Footprints,
@@ -7,23 +9,42 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { type FormEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PageSectionScroller } from "@/components/ui/page";
 
 const QuickSearch = () => {
+  const router = useRouter();
+  const [search, setSearch] = useState("");
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const trimmedSearch = search.trim();
+
+    if (!trimmedSearch) {
+      return;
+    }
+
+    router.push(`/barbershops?search=${encodeURIComponent(trimmedSearch)}`);
+  };
+
   return (
     <>
-      <div className="flex items-center gap-2">
+      <form className="flex items-center gap-2" onSubmit={handleSubmit}>
         <Input
           className="border-border rounded-full"
-          placeholder="Pesquise serviços ou barbearias"
+          placeholder="Pesquise..."
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
         />
-        <Button className="h-10 w-10 rounded-full">
+        <Button className="h-10 w-10 rounded-full" type="submit">
           <SearchIcon />
         </Button>
-      </div>
+      </form>
       <PageSectionScroller>
         <Link
           href="/barbershops?search=cabelo"

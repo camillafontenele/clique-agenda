@@ -5,6 +5,22 @@ export const getBarbershops = async () => {
   return barbershops;
 };
 
+export const getBarbershopsByServiceName = async (search: string) => {
+  const barbershops = await prisma.barbershop.findMany({
+    where: {
+      services: {
+        some: {
+          name: {
+            contains: search,
+            mode: "insensitive",
+          },
+        },
+      },
+    },
+  });
+  return barbershops;
+};
+
 export const getBarbershopById = async (id: string) => {
   const barbershop = await prisma.barbershop.findUnique({
     where: { id },
